@@ -1,0 +1,4 @@
+com\afam\apps\biodata\ejb\BiodataBean.class
+com\afam\apps\biodata\web\BiodataManBean.class
+com\afam\apps\biodata\entity\UserBiodata.class
+com\afam\apps\biodata\entity\UserBiodata_.class
