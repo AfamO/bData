@@ -67,8 +67,8 @@ public class BiodataBeanTest {
     //@Test
     public void testSaveUserBiodata() throws Exception {
         System.out.println("saveUserBiodata");
-        String username = "afamsimon@gmail.com";
-        String password = "donsimon";
+        String username = "AfamO";
+        String password = "d!219@wX";
         String address = "419 Idumota Lagos";
         int age = 20;
         String occupation = "Programmer";
