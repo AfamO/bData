@@ -9,8 +9,10 @@ package com.afam.apps.biodata.web;
 import com.afam.apps.biodata.ejb.BiodataBean;
 import com.afam.apps.biodata.entity.UserBiodata;
 import java.beans.*;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Properties;
 import javax.ejb.EJB;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -37,6 +39,7 @@ public class BiodataManBean implements Serializable {
     protected int age=16;
     private String username="";
     UserBiodata userBiodata;
+    Properties properties;
     
     /**
      * Creates a new instance of BiodataManBean
@@ -120,6 +123,15 @@ public class BiodataManBean implements Serializable {
         this.setOccupation(userBiodata.getOccupation());
         return "/viewBiodata.xhtml";
     }
+    public  String loadAppProperties(String param) {
+    properties = new Properties();
+        try {
+            properties.load(getClass().getClassLoader().getResourceAsStream("application1.properties"));
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(BiodataManBean.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        return properties.getProperty(param);
+}
     
 
     /**
@@ -129,9 +141,14 @@ public class BiodataManBean implements Serializable {
      */
     public int getAge() {
         try {
+            String url=loadAppProperties("remoteUrl1");
+            if(url==null ||url.isEmpty()){
+                logger.log(Level.INFO, "Webservie Remote Url Missing, Hence the returned age is -1 ");
+                return -1;
+            }
             Client client = ClientBuilder.newClient();
             WebTarget target
-                    = client.target("http://localhost:8080/dukes-age/webapi/dukesAge");
+                    = client.target(url);
             String response = target.request().get(String.class);
             age = Integer.parseInt(response);
         } catch (IllegalArgumentException | NullPointerException |
